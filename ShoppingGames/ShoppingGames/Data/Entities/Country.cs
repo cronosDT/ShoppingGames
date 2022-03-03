@@ -14,7 +14,7 @@ namespace ShoppingGames.Data.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         // {0} This gonna replace for the country, Camp "Name"
         //{1} Replace for the camp en the restriccion, in this case for the name 50
-        public string Name { get; set; }
+        public string Name { get; set;  }
 
     }
 }

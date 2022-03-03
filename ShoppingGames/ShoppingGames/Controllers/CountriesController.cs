@@ -21,12 +21,14 @@ namespace ShoppingGames.Controllers
         }
 
         // GET: Countries
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Countries.ToListAsync());
         }
 
         // GET: Countries/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,6 +47,7 @@ namespace ShoppingGames.Controllers
         }
 
         // GET: Countries/Create
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -87,7 +90,7 @@ namespace ShoppingGames.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Country country)
+        public async Task<IActionResult> Edit(int id, Country country)
         {
             if (id != country.Id)
             {
