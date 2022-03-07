@@ -1,15 +1,13 @@
-﻿@model ShoppingGames.Data.Entities.Country
-
+﻿@model ShoppingGames.Data.Entities.Category
 @{
     ViewData["Title"] = "Delete";
 }
 
 <h1>Borrar</h1>
-
-<h3>Estas seguro de borrar este pais?</h3>
+<h3>¿Estas seguro de borrar esta categoria?</h3>
 <div>
-    <partial name="_CountryDetails" />
-    
+    <partial name="_CategoryDetails" />
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Borrar" class="btn btn-outline-danger" />

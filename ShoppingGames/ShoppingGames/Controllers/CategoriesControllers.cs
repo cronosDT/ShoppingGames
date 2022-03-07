@@ -41,10 +41,11 @@ namespace ShoppingGames.Controllers
             return View();
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category )
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -69,7 +70,7 @@ namespace ShoppingGames.Controllers
                     ModelState.AddModelError(string.Empty, ex.Message)
 ;                }
             }
-            return View();
+            return View(category);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -79,7 +80,7 @@ namespace ShoppingGames.Controllers
                 return NotFound();
             }
             var category = await _context.categories.FindAsync(id);
-            if(category == null)
+            if (category == null)
             {
                 return NotFound();
             }
