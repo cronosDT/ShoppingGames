@@ -1,8 +1,28 @@
-﻿@{
+﻿@*<link rel="stylesheet" href="~/css/HomePage.css" asp-append-version="true" />*@
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+#HomePage{
+    height:100%;
+    margin-top:15%;
+    margin-right:60%;
+
+}
+#tittle{
+    font-size:300%;
+}
+</style>
+
+
+<div class="text-center shadow-sm p-3 mb-5 rounded" id="HomePage">
+    <div class="container row" id="tittle">
+        <div class="margin col-auto mr-auto ">
+            <h1>T.S.P</h1>
+        </div>
+        <div class="margin col-auto mr-auto">         
+            <h5>Total Solution to Programmers</h5>
+        </div>
+    </div>
 </div>

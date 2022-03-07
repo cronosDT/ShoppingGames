@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ShoppingGames.Data.Entities.Country>
+﻿@model IEnumerable<ShoppingGames.Data.Entities.Category>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,30 +8,31 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container-fluid">
-        <h3 class="navbar-brand">Paises</h3>
+        <h3 class="navbar-brand">Categorias</h3>
         <a asp-action="Create" class="btn btn-primary float-right mb-2">Crear nuevo</a>
     </div>
 </nav>
+
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
                 <table class="table table-hover table-responsive border-bottom-0 bg-primary bg-opacity-25 m-3 mt-5" id="MyTable">
-                    <thead class="mt-4">
+                    <thead>
                         <tr>
-                            <th scope="col">
+                            <th>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
-                            <th scope="col"></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <th scope="row">
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name )
+                                </td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-success">Editar</a> |
                                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary">Detalles</a> |
@@ -45,7 +46,8 @@
         </div>
     </div>
 </div>
-@section Scripts {
+@section Scripts
+{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -54,7 +56,7 @@
 <script type="text/javascript">
     $(document).ready(function (){
         $("#MyTable").DataTable({
-            "dom": '<"top"f>rt<"bottom"lpi><"clear">',
+             "dom": '<"top"f>rt<"bottom"lpi><"clear">',
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
             },
@@ -66,3 +68,4 @@
     });
 </script>
 }
+
