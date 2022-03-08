@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShoppingGames.Data;
 using ShoppingGames.Data.Entities;
+using ShoppingGames.Models;
 
 namespace ShoppingGames.Controllers
 {
@@ -24,7 +25,9 @@ namespace ShoppingGames.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Countries.ToListAsync());
+            return View(await _context.Countries
+                .Include(c => c.States)
+                .ToListAsync());
         }
 
         // GET: Countries/Details/5
@@ -37,6 +40,7 @@ namespace ShoppingGames.Controllers
             }
 
             var country = await _context.Countries
+                .Include(c => c.States)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
@@ -50,7 +54,8 @@ namespace ShoppingGames.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            Country country = new() { States = new List<State>() };
+            return View(country);
         }
 
         // POST: Countries/Create
@@ -74,7 +79,7 @@ namespace ShoppingGames.Controllers
                     {
                         ModelState.AddModelError(String.Empty, "Ya existe un pais con el mismo nombre");
                     }
-                    else 
+                    else
                     {
                         ModelState.AddModelError(String.Empty, dbUpdateException.InnerException.Message);
                     }
@@ -138,7 +143,7 @@ namespace ShoppingGames.Controllers
                 {
                     ModelState.AddModelError(String.Empty, e.Message);
                 }
-               
+
             }
             return View(country);
         }
@@ -152,6 +157,7 @@ namespace ShoppingGames.Controllers
             }
 
             var country = await _context.Countries
+                .Include(c => c.States)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
@@ -167,14 +173,70 @@ namespace ShoppingGames.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var country = await _context.Countries.FindAsync(id);
-            _context.Countries.Remove(country); 
+            _context.Countries.Remove(country);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        //private bool CountryExists(int id)
-        //{
-        //    return _context.Countries.Any(e => e.Id == id);
-        //}
+        //--------------------------------------------------------------
+        public async Task<IActionResult> AddState(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            Country country = await _context.Countries.FindAsync(id);
+            if(country == null)
+            {
+                return NotFound();
+            }
+
+            StatesViewModel model = new()
+            {
+                CountryId = country.Id,
+            };
+            return View(model);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddState(StatesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    State state = new()
+                    { 
+                        Cities = new List<City>(),
+                        Country = await _context.Countries.FindAsync(model.CountryId),
+                        Name = model.Name,
+                    };
+
+                    _context.Add(state);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new { Id = model.CountryId });
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe un departamento/estado con el mismo nombre en este pais");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message)
+;
+                }
+            }
+            return View(model);
+        }
     }
 }
