@@ -11,7 +11,7 @@
 <div>
     <a asp-action="AddCity" asp-route-id="@Model?.Id" class="btn btn-outline-primary">Agregar ciudad</a>
     <a asp-action="EditState" asp-route-id="@Model?.Id" class="btn btn-outline-success">Editar Departamento/Estado</a> |
-    <a asp-action="Details" asp-route-if="@Model?.Id" class="btn btn-outline-secondary">Regresar</a>
+    <a asp-action="Details" asp-route-if="@Model?.Country.Id" class="btn btn-outline-secondary">Regresar</a>
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white">

@@ -340,36 +340,26 @@ namespace ShoppingGames.Controllers
             }
 
             State state = await _context.States
-                .Include(c => c.Cities)
+                .Include(c => c.Country)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (state == null)
             {
                 return NotFound();
             }
-            StatesViewModel model = new()
-            {
-                CountryId = state.Country.Id,
-                Id = state.Id,
-                Name = state.Name,
-
-            };
-
-            return View(model);
+            return View(state);
         }
 
         // POST: Countries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmedState(int id, StatesViewModel model)
+        public async Task<IActionResult> DeleteConfirmedState(int id)
         {
-            State state = new()
-            {
-                Id = model.Id,
-                Name = model.Name,
-            };
+            State state = await _context.States
+                .Include(s => s.Country)
+                .FirstOrDefaultAsync(s => s.Id == id);
             _context.States.Remove(state);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new { Id = model.Id });
+            return RedirectToAction(nameof(Details), new { Id = state.Country.Id });
         }
     }
 }
