@@ -400,7 +400,7 @@ namespace ShoppingGames.Controllers
 
                     _context.Add(city);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Details), new { Id = model.StateId });
+                    return RedirectToAction(nameof(DetailsState), new { Id = model.StateId });
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
@@ -470,7 +470,7 @@ namespace ShoppingGames.Controllers
                     };
                     _context.Update(city);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Details), new { Id = model.StateId });
+                    return RedirectToAction(nameof(DetailsState), new { Id = model.StateId });
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
@@ -491,5 +491,54 @@ namespace ShoppingGames.Controllers
             }
             return View(model);
         }
+
+        public async Task<IActionResult> DetailsCity(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            City city = await _context.Cities
+                .Include(s => s.State)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (city == null)
+            {
+                return NotFound();
+            }
+
+            return View(city);
+        }
+
+        public async Task<IActionResult> DeleteCity(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            City city = await _context.Cities
+                .Include(c => c.State)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (city == null)
+            {
+                return NotFound();
+            }
+            return View(city);
+        }
+
+        // POST: Countries/Delete/5
+        [HttpPost, ActionName("DeleteCity")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCityConfirmed(int id)
+        {
+            City city = await _context.Cities
+                .Include(s => s.State)
+                .FirstOrDefaultAsync(s => s.Id == id);
+            _context.Cities.Remove(city);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(DetailsState), new { Id = city.State.Id });
+        }
+
     }
 }

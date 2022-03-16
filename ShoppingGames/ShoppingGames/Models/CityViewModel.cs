@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShoppingGames.Data.Entities
-{
+namespace ShoppingGames.Models
+{ 
     public class CityViewModel
     {
         public int Id { get; set; }
