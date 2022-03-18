@@ -41,6 +41,7 @@ namespace ShoppingGames.Controllers
 
             var country = await _context.Countries
                 .Include(c => c.States)
+                .ThenInclude(c => c.Cities)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
