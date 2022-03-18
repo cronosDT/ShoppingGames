@@ -12,6 +12,11 @@ namespace ShoppingGames.Data
         { 
         }
 
+        internal Task CheckCategoriesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public DbSet<Country> Countries { get; set; }
         public DbSet<Category> categories { get; set; }
         public DbSet<State> States { get; set; }
